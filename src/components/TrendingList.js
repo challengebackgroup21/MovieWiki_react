@@ -39,7 +39,7 @@ function TrendingList() {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {movies.map((movie) => {
           return (
-            <div key={movie.movieId}>
+            <div style={{ padding: '1rem' }} key={movie.movieId}>
               <div>제목: {movie.movieNm}</div>
               <div>감독: {movie.directors}</div>
               <div>장르: {movie.genres}</div>
