@@ -1,58 +1,108 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+
+import { useNavigate, useParams } from 'react-router-dom';
 
 function MovieUpdatePage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState('');
   const [post, setPost] = useState('');
-
+  const [content, setContent] = useState('');
+  const [comment, setComment] = useState('');
+  const navigate = useNavigate();
   useEffect(() => {
-    setMovie({
-      movie_id: 1,
-      movieNm: '주토피아',
-      showTm: 122,
-      openDt: 20120223,
-      typeNm: '장편',
-      nationNm: '미국',
-      genres: ['드라마', '멜로/로맨스'],
-      directors: '켄 콰피스',
-      actors: ['드류 베리모어', '크리 스틴 벨'],
-      watchGradeNm: '전체관람가',
-      likes: 3,
+    axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
+      setMovie(res.data);
+      console.log(movie);
     });
-
-    setPost({
-      userId: '2',
-      comment: '첫 버전',
-      content: '동심을 깨우는 주토피아',
-      createdAt: '20230524_16:02:22',
-      version: 1,
+    axios.get(`http://localhost:3001/post/${movieId}/record`).then((res) => {
+      console.log(res.data[0]);
+      if (res.data[0]) {
+        setPost(res.data[0]);
+        setContent(res.data[0].content);
+        setComment(res.data[0].comment);
+      }
     });
   }, []);
+
+  const handleChangecontent = (e) => {
+    setContent(e.target.value);
+  };
+
+  const handleChangeComment = (e) => {
+    setComment(e.target.value);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    axios
+      .post(`http://localhost:3001/post/${movieId}/record`, {
+        content: content,
+        comment: comment,
+      })
+      .then((res) => {
+        alert(res);
+        navigate(`http://localhost:3001/movies/${movieId}`);
+      });
+  };
 
   return (
     <div>
       <h1>Movie Info</h1>
       <div className="movieInfo">
-        <div>movie_id : {movieId}</div>
-        <div>movieNm : {movie.movieNm}</div>
-        <div>showTm : {movie.showTm}</div>
-        <div>openDt : {movie.openDt}</div>
-        <div>typeNm : {movie.typeNm}</div>
-        <div>nationNm : {movie.nationNm}</div>
-        <div>genres : {movie.genres}</div>
-        <div>directors : {movie.directors}</div>
-        <div>actors : {movie.actors}</div>
-        <div>watchGradeNm : {movie.watchGradeNm}</div>
-        <div>likes : {movie.likes}</div>
+        <div style={{ padding: '1rem' }}>
+          <h4>제목: {movie.movieNm}</h4>
+          <div>
+            감독:
+            {movie.directors &&
+              movie.directors.map((dircetor) => {
+                return dircetor;
+              })}
+          </div>
+          <div>장르: {movie.genreAlt}</div>
+          <div>
+            출연 배우:{' '}
+            {movie.actors &&
+              movie.actors.map((actor) => {
+                return `${actor} `;
+              })}
+          </div>
+          <div>상영 시간: {movie.showTm} 분</div>
+          <div>관람 등급: {movie.watchGradeNm}</div>
+          <div>views: {movie.views}</div>
+          <div>likes: {movie.likes}</div>
+        </div>
       </div>
       <div className="postInfo">
-        <div>작성자 : {post.userId}</div>
-        <div>설명 : {post.content}</div>
-        <div>작성자 코멘트 : {post.comment}</div>
-        <div>version : {post.version}</div>
+        설명
+        <div>
+          <textarea
+            name="content"
+            id="content"
+            cols="30"
+            rows="5"
+            onChange={handleChangecontent}
+            value={content}
+          ></textarea>
+        </div>
+        <div>version : {post?.version}</div>
+        <div>
+          <textarea
+            name="comment"
+            id="comment"
+            cols="30"
+            rows="2"
+            onChange={handleChangeComment}
+            value={comment}
+          ></textarea>
+        </div>
       </div>
-      <button style={{ padding: '0.5rem' }}>수정하기</button>
+      <button
+        onClick={submitHandler}
+        style={{ padding: '0.2rem', margin: '10px 0' }}
+      >
+        수정하기
+      </button>
     </div>
   );
 }

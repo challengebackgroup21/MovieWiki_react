@@ -21,7 +21,7 @@ function ReportBoardPage() {
         userId: 4,
         reportUserId: 2,
         notificationContent: '욕설 신고합니다.',
-        status: '처리완료',
+        status: '신고 거부 완료',
       },
     ]);
   }, []);

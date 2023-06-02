@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -6,23 +7,19 @@ function MovieVersionPage() {
   const [versions, setVersions] = useState([]);
 
   useEffect(() => {
-    setVersions([
-      {
-        userId: 2,
-        content: '생기발랄 주토피아',
-        comment: '첫 번째 작성',
-        createdAt: '20230524_16:02:22',
-        version: 1,
-      },
-      {
-        userId: 3,
-        content: '생기발랄 자연친화 주토피아',
-        comment: '두 번째 작성',
-        createdAt: '20230524_21:02:22',
-        version: 2,
-      },
-    ]);
+    axios.get(`http://localhost:3001/post/${movieId}/record`).then((res) => {
+      setVersions(res.data);
+    });
   }, []);
+
+  const revertHandler = (e, postId, version) => {
+    e.preventDefault();
+    if (window.confirm('해당 버전으로 게시글을 되돌리시겠습니까?')) {
+      axios.post(`http://localhost:3001/post/${movieId}/record/${postId}`, {
+        commnet: `${version} 버전으로 되돌림`,
+      });
+    }
+  };
 
   return (
     <div>
@@ -35,7 +32,18 @@ function MovieVersionPage() {
             <div>작성자 코멘트 : {version.comment}</div>
             <div>변경 시간 : {version.createdAt}</div>
             <div>version : {version.version}</div>
-            <Link to={`/report/${movieId}/${version.version}`}>신고하기</Link>
+            <div className="btnGroup">
+              <Link to={`/report/${movieId}/${version.version}`}>
+                <button>신고하기</button>
+              </Link>
+              <button
+                onClick={(e) =>
+                  revertHandler(e, version.postId, version.version)
+                }
+              >
+                되돌리기
+              </button>
+            </div>
           </div>
         );
       })}

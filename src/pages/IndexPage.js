@@ -5,7 +5,8 @@ function IndexPage() {
     <div>
       <h1 style={{ margin: '100px 0' }}>Movie Wiki</h1>
       <form>
-        <select name="searchType" id="searchType">
+        <select name="option" id="option">
+          <option value="total">전체</option>
           <option value="title">제목</option>
           <option value="director">감독</option>
           <option value="genres">장르</option>

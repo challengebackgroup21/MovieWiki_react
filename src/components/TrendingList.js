@@ -1,50 +1,48 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function TrendingList() {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
-    setMovies([
-      {
-        movieId: 1,
-        movieNm: '주토피아',
-        showTm: '122',
-        openDt: '20120223',
-        typeNm: '장편',
-        nationNm: '미국',
-        genres: ['드라마', '멜로/로맨스'],
-        directors: '켄 콰피스',
-        actors: ['드류 베리모어', '크리스틴 벨'],
-        watchGradeNm: '전체관람가',
-        likes: 12,
-      },
-      {
-        movieId: 2,
-        movieNm: '주토피아2',
-        showTm: '122',
-        openDt: '20120223',
-        typeNm: '장편',
-        nationNm: '미국',
-        genres: ['드라마', '멜로/로맨스'],
-        directors: '켄 콰피스',
-        actors: ['드류 베리모어', '크리스틴 벨'],
-        watchGradeNm: '전체관람가',
-        likes: 13,
-      },
-    ]);
+    axios.get(`http://localhost:3001/movies/like?cnt=5`).then((res) => {
+      setMovies(res.data);
+    });
   }, []);
 
   return (
     <div>
       <h3>인기 리스트</h3>
+      <Link></Link>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {movies.map((movie) => {
           return (
-            <div style={{ padding: '1rem' }} key={movie.movieId}>
-              <div>제목: {movie.movieNm}</div>
-              <div>감독: {movie.directors}</div>
-              <div>장르: {movie.genres}</div>
-              <div>출연 배우: {movie.actors}</div>
-            </div>
+            <Link
+              style={{
+                padding: '0.5rem',
+                color: 'black',
+                textDecoration: 'none',
+                backgroundColor: '#eee',
+                border: '1px solid black',
+              }}
+              to={`/movie/${movie.movieId}`}
+            >
+              <div style={{ padding: '1rem' }} key={movie.movieId}>
+                <h4>제목: {movie.movieNm}</h4>
+                <div>
+                  감독:
+                  {movie.directors.length === 0
+                    ? ' 없음'
+                    : ` ${movie.directors[0].peopleNm}`}
+                </div>
+                <div>장르: {movie.genreAlt}</div>
+                <div>출연 배우: {movie.actors}</div>
+                <div>상영 시간: {movie.showTm} 분</div>
+                <div>관람 등급: {movie.watchGradeNm}</div>
+                <div>views: {movie.views}</div>
+                <div>likes: {movie.likes}</div>
+              </div>
+            </Link>
           );
         })}
       </div>

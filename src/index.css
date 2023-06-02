@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.btnGroup button {
+  padding: 3px;
+  margin: 5px 5px;
+}
