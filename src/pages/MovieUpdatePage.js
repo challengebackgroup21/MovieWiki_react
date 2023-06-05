@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Editor from '../components/Editor';
 
 function MovieUpdatePage() {
   const { movieId } = useParams();
@@ -13,10 +15,8 @@ function MovieUpdatePage() {
   useEffect(() => {
     axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
       setMovie(res.data);
-      console.log(movie);
     });
     axios.get(`http://localhost:3001/post/${movieId}/record`).then((res) => {
-      console.log(res.data[0]);
       if (res.data[0]) {
         setPost(res.data[0]);
         setContent(res.data[0].content);
@@ -24,10 +24,6 @@ function MovieUpdatePage() {
       }
     });
   }, []);
-
-  const handleChangecontent = (e) => {
-    setContent(e.target.value);
-  };
 
   const handleChangeComment = (e) => {
     setComment(e.target.value);
@@ -76,14 +72,7 @@ function MovieUpdatePage() {
       <div className="postInfo">
         설명
         <div>
-          <textarea
-            name="content"
-            id="content"
-            cols="30"
-            rows="5"
-            onChange={handleChangecontent}
-            value={content}
-          ></textarea>
+          <Editor onChange={setContent} value={content} />
         </div>
         <div>version : {post?.version}</div>
         <div>
@@ -93,6 +82,7 @@ function MovieUpdatePage() {
             cols="30"
             rows="2"
             onChange={handleChangeComment}
+            placeholder="comment"
             value={comment}
           ></textarea>
         </div>

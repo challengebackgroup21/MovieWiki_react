@@ -5,9 +5,16 @@ import { Link } from 'react-router-dom';
 function TrendingList() {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
-    axios.get(`http://localhost:3001/movies/like?cnt=5`).then((res) => {
-      setMovies(res.data);
-    });
+    axios
+      .get(`http://localhost:3001/movies/like?cnt=5`, {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+      .then((res) => {
+        setMovies(res.data);
+      })
+      .catch(setMovies([]));
   }, []);
 
   return (
