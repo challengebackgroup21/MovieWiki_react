@@ -20,7 +20,7 @@ function TrendingList() {
   return (
     <div>
       <h3>인기 리스트</h3>
-      <Link></Link>
+
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {movies.map((movie) => {
           return (
@@ -31,6 +31,7 @@ function TrendingList() {
                 textDecoration: 'none',
                 backgroundColor: '#eee',
                 border: '1px solid black',
+                width: '17%',
               }}
               to={`/movie/${movie.movieId}`}
             >
@@ -38,12 +39,16 @@ function TrendingList() {
                 <h4>제목: {movie.movieNm}</h4>
                 <div>
                   감독:
-                  {movie.directors.length === 0
-                    ? ' 없음'
-                    : ` ${movie.directors[0].peopleNm}`}
+                  {movie.directors}
                 </div>
                 <div>장르: {movie.genreAlt}</div>
-                <div>출연 배우: {movie.actors}</div>
+                <div>
+                  출연 배우:{' '}
+                  {movie?.actors &&
+                    movie?.actors.map((actor) => {
+                      return `${actor} `;
+                    })}
+                </div>
                 <div>상영 시간: {movie.showTm} 분</div>
                 <div>관람 등급: {movie.watchGradeNm}</div>
                 <div>views: {movie.views}</div>

@@ -5,7 +5,9 @@ function MovieDetailPage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const [post, setPost] = useState('');
-
+  const [userInfo, setUserInfo] = useState(() =>
+    JSON.parse(localStorage.getItem('userInfo'))
+  );
   useEffect(() => {
     axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
       setMovie(res.data);
@@ -15,6 +17,23 @@ function MovieDetailPage() {
       setPost(res.data[0]);
     });
   }, []);
+
+  function likeSubmitHandler() {
+    axios
+      .patch(
+        `http://localhost:3001/movie/${movieId}/like`,
+        {},
+        { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
+        { withCrdentilas: true }
+      )
+      .then((res) => {
+        alert(res.data);
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
 
   return (
     <div>
@@ -53,6 +72,7 @@ function MovieDetailPage() {
       <Link style={{ padding: '0.5rem' }} to={`/movie/version/${movieId}`}>
         히스토리
       </Link>
+      <button onClick={likeSubmitHandler}>좋아요</button>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 import 'react-quill/dist/quill.snow.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Editor from '../components/Editor';
 
 function MovieUpdatePage() {
@@ -11,18 +11,24 @@ function MovieUpdatePage() {
   const [post, setPost] = useState('');
   const [content, setContent] = useState('');
   const [comment, setComment] = useState('');
+  const [userInfo, setUserInfo] = useState();
   const navigate = useNavigate();
+
   useEffect(() => {
+    if (JSON.parse(localStorage.getItem('userInfo'))) {
+      setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
+    }
+
     axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
       setMovie(res.data);
     });
-    axios.get(`http://localhost:3001/post/${movieId}/record`).then((res) => {
-      if (res.data[0]) {
-        setPost(res.data[0]);
-        setContent(res.data[0].content);
-        setComment(res.data[0].comment);
-      }
-    });
+    axios
+      .get(`http://localhost:3001/post/${movieId}/record/latest`)
+      .then((res) => {
+        setPost(res.data);
+        setContent(res.data.content);
+        setComment(res.data.comment);
+      });
   }, []);
 
   const handleChangeComment = (e) => {
@@ -32,13 +38,18 @@ function MovieUpdatePage() {
   const submitHandler = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/post/${movieId}/record`, {
-        content: content,
-        comment: comment,
-      })
+      .post(
+        `http://localhost:3001/post/${movieId}/record`,
+        {
+          content: content,
+          comment: comment,
+        },
+        { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
+        { withCrdentilas: true }
+      )
       .then((res) => {
-        alert(res);
-        navigate(`http://localhost:3001/movies/${movieId}`);
+        alert(res.data.message);
+        navigate(-1);
       });
   };
 
@@ -93,6 +104,9 @@ function MovieUpdatePage() {
       >
         수정하기
       </button>
+      <Link to={`/movie/${movieId}`}>
+        <button style={{ padding: '0.2rem', margin: '10px' }}>돌아가기</button>
+      </Link>
     </div>
   );
 }

@@ -1,28 +1,32 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
-  const [userInfo, setUserInfo] = useState({});
+  const [isLogin, setIslogin] = useState(false);
+  const [userInfo, setUserInfo] = useState(() =>
+    JSON.parse(localStorage.getItem('userInfo'))
+  );
   const navigate = useNavigate();
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem('userInfo'))) {
-      return setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
+    if (userInfo) {
+      setIslogin(true);
     }
   }, []);
-  console.log(userInfo);
 
   function logout() {
-    axios
-      .put(
-        'http://localhost:3001/auth/logout',
-        { headers: { authorization: userInfo?.refreshToken } },
-        { withCrdentilas: true }
-      )
-      .then((result) => {
-        localStorage.removeItem('userInfo');
-        navigate('/');
-      });
+    // axios
+    //   .put(
+    //     'http://localhost:3001/auth/logout',
+    //     {},
+    //     { headers: { Authorization: `Bearer ${userInfo?.refreshToken}` } },
+    //     { withCrdentilas: true }
+    //   )
+    //   .then((result) => {
+    //     localStorage.removeItem('userInfo');
+    //     navigate('/');
+    //   });
+    localStorage.removeItem('userInfo');
+    window.location.replace('/');
   }
 
   const userEmail = userInfo?.email;
@@ -39,15 +43,14 @@ function Header() {
         <Link to="/">MovieWiki</Link>
       </nav>
       <nav style={{ marginRight: '1rem' }}>
-        {userEmail && (
+        {isLogin ? (
           <>
             <div style={{ display: 'inline-block', marginRight: '1rem' }}>
               {userEmail}
             </div>
             <Link onClick={logout}>logout</Link>
           </>
-        )}
-        {!userEmail && (
+        ) : (
           <>
             <Link to="/login">login</Link>
             <Link to="/signup" style={{ paddingLeft: '1rem' }}>

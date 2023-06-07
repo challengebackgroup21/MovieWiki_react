@@ -5,7 +5,9 @@ import { Link, useParams } from 'react-router-dom';
 function MovieVersionPage() {
   const { movieId } = useParams();
   const [versions, setVersions] = useState([]);
-
+  const [userInfo, setUserInfo] = useState(() =>
+    JSON.parse(localStorage.getItem('userInfo'))
+  );
   useEffect(() => {
     axios.get(`http://localhost:3001/post/${movieId}/record`).then((res) => {
       setVersions(res.data);
@@ -15,9 +17,19 @@ function MovieVersionPage() {
   const revertHandler = (e, postId, version) => {
     e.preventDefault();
     if (window.confirm('해당 버전으로 게시글을 되돌리시겠습니까?')) {
-      axios.post(`http://localhost:3001/post/${movieId}/record/${postId}`, {
-        commnet: `${version} 버전으로 되돌림`,
-      });
+      axios
+        .post(
+          `http://localhost:3001/post/${movieId}/record/${postId}`,
+          {
+            comment: `${version} 버전으로 되돌림`,
+          },
+          { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
+          { withCrdentilas: true }
+        )
+        .then((res) => {
+          alert(res.data.message);
+          window.location.reload();
+        });
     }
   };
 
@@ -33,7 +45,9 @@ function MovieVersionPage() {
             <div>변경 시간 : {version.createdAt}</div>
             <div>version : {version.version}</div>
             <div className="btnGroup">
-              <Link to={`/report/${movieId}/${version.version}`}>
+              <Link
+                to={`/report/${movieId}/${version.version}/?postId=${version.postId}`}
+              >
                 <button>신고하기</button>
               </Link>
               <button

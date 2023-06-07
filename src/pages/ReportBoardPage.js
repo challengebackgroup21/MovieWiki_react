@@ -1,30 +1,58 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ReportBoardPage() {
   const [reports, setReports] = useState([]);
+  const [userInfo, setUserInfo] = useState(() =>
+    JSON.parse(localStorage.getItem('userInfo'))
+  );
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setReports([
-      {
-        notiId: 1,
-        movieId: 3,
-        postId: 5,
-        userId: 4,
-        reportUserId: 2,
-        notificationContent: '욕설 신고합니다.',
-        status: '미처리',
-      },
-      {
-        notiId: 1,
-        movieId: 3,
-        postId: 5,
-        userId: 4,
-        reportUserId: 2,
-        notificationContent: '욕설 신고합니다.',
-        status: '신고 거부 완료',
-      },
-    ]);
+    axios
+      .get(
+        'http://localhost:3001/notifications',
+        { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
+        { withCrdentilas: true }
+      )
+      .then((res) => {
+        setReports(res.data);
+      })
+      .catch((err) => {
+        alert('로딩 실패');
+        navigate(-1);
+      });
   }, []);
+  const acceptReport = (notiId) => {
+    axios
+      .patch(
+        `http://localhost:3001/notifications/${notiId}/accept`,
+        { status: 'ACCEPT' },
+        { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
+        { withCrdentilas: true }
+      )
+      .then((res) => {
+        alert(res.data);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const rejectReport = (notiId) => {
+    axios
+      .patch(
+        `http://localhost:3001/notifications/${notiId}/reject`,
+        { status: 'REJECT' },
+        { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
+        { withCrdentilas: true }
+      )
+      .then((res) => {
+        alert(res.data);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -50,16 +78,28 @@ function ReportBoardPage() {
               <br />
               <span>postId: {report.postId}</span>
               <br />
-              <span>userId: {report.userId}</span>
+              <span>reporter: {report.reporterId.userId}</span>
               <br />
-              <span>reportUserId: {report.reportUserId}</span>
+              <span>reported: {report.reportedId.userId}</span>
               <br />
               <span>notificationContent: {report.notificationContent}</span>
               <br />
-              {report.status === '미처리' ? (
+              {report.status === 'AWAIT' ? (
                 <div>
-                  <button>승인</button>
-                  <button>거부</button>
+                  <button
+                    onClick={() => {
+                      acceptReport(report.notiId);
+                    }}
+                  >
+                    승인
+                  </button>
+                  <button
+                    onClick={() => {
+                      rejectReport(report.notiId);
+                    }}
+                  >
+                    거부
+                  </button>
                 </div>
               ) : (
                 <span>status: {report.status}</span>

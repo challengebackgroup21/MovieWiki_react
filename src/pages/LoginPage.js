@@ -1,11 +1,12 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [redierct, setRedirect] = useState(false);
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   async function login(ev) {
     ev.preventDefault();
     const response = await axios
@@ -30,7 +31,7 @@ function LoginPage() {
       );
   }
   if (redierct) {
-    return <Navigate to={'/'} />;
+    window.location.replace('/');
   }
   return (
     <form
