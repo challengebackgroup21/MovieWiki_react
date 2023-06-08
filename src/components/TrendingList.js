@@ -21,7 +21,12 @@ function TrendingList() {
     <div>
       <h3>인기 리스트</h3>
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         {movies.map((movie) => {
           return (
             <Link

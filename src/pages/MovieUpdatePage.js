@@ -12,6 +12,8 @@ function MovieUpdatePage() {
   const [content, setContent] = useState('');
   const [comment, setComment] = useState('');
   const [userInfo, setUserInfo] = useState();
+  const [lastestPost, setLastestPost] = useState();
+  const [lastestActive, setLastestActive] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,10 +27,11 @@ function MovieUpdatePage() {
     axios
       .get(`http://localhost:3001/post/${movieId}/record/latest`)
       .then((res) => {
-        setPost(res.data);
-        setContent(res.data.content);
-        setComment(res.data.comment);
-      });
+        setPost(res.data ? res.data : '');
+        setContent(res.data.content ? res.data.content : '');
+        setComment(res.data?.comment ? res.data.comment : '');
+      })
+      .catch((err) => {});
   }, []);
 
   const handleChangeComment = (e) => {
@@ -43,6 +46,7 @@ function MovieUpdatePage() {
         {
           content: content,
           comment: comment,
+          version: post.version ? post.version : '',
         },
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }
@@ -50,6 +54,20 @@ function MovieUpdatePage() {
       .then((res) => {
         alert(res.data.message);
         navigate(-1);
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          axios
+            .get(`http://localhost:3001/post/${movieId}/record/latest`)
+            .then((res) => {
+              alert(
+                '현재 수정하고 있는 버전의 이전 버전이 누군가의 수정에 의해 변경되었습니다. 수정 사항들을 ctrl+C로 저장한 후 다시 시도해주세요.'
+              );
+              setLastestPost(res.data);
+              setLastestActive(true);
+            })
+            .catch((err) => {});
+        }
       });
   };
 
@@ -98,6 +116,23 @@ function MovieUpdatePage() {
           ></textarea>
         </div>
       </div>
+      {lastestActive ? (
+        <div style={{ color: 'green' }} className="lastestPostInfo">
+          <div>현재 최신 버전</div>
+          <div>작성자 : {lastestPost?.userId}</div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: `내용${lastestPost?.content}`,
+            }}
+          ></div>
+          <div>작성자 코멘트 : {lastestPost?.comment}</div>
+          <div>변경 시간 : {lastestPost?.createdAt}</div>
+          <div>version : {lastestPost?.version}</div>
+        </div>
+      ) : (
+        ''
+      )}
+
       <button
         onClick={submitHandler}
         style={{ padding: '0.2rem', margin: '10px 0' }}

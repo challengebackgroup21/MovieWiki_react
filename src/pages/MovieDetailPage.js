@@ -63,7 +63,11 @@ function MovieDetailPage() {
         </div>
       </div>
       <div className="postInfo">
-        <div>설명 : {post?.content}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `설명 ${post?.content ? post?.content : ''}`,
+          }}
+        ></div>
         <div>version : {post?.version}</div>
       </div>
       <Link style={{ padding: '0.5rem' }} to={`/movie/update/${movieId}`}>

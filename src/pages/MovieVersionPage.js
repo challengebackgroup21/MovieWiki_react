@@ -29,6 +29,9 @@ function MovieVersionPage() {
         .then((res) => {
           alert(res.data.message);
           window.location.reload();
+        })
+        .catch((err) => {
+          alert('로그인이 필요한 기능입니다.');
         });
     }
   };
@@ -38,9 +41,17 @@ function MovieVersionPage() {
       <div>MovieVersionPage {movieId}</div>
       {versions.map((version) => {
         return (
-          <div style={{ margin: '1rem 0' }} className="version-box">
+          <div
+            style={{ margin: '0 auto', width: '40%' }}
+            className="version-box"
+          >
             <div>작성자 : {version.userId}</div>
-            <div>변경 내용 : {version.content}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: `내용${version.content}`,
+              }}
+              style={{ border: '2px solid black' }}
+            ></div>
             <div>작성자 코멘트 : {version.comment}</div>
             <div>변경 시간 : {version.createdAt}</div>
             <div>version : {version.version}</div>
