@@ -1,7 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 function ReportPage() {
   const { movieId, version } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,6 +62,9 @@ function ReportPage() {
         <div>version : {version}</div>
       </div>
       <button onClick={submitReportHandler}>신고</button>
+      <Link to={`/movie/version/${movieId}`}>
+        <button style={{ padding: '0.2rem', margin: '10px' }}>돌아가기</button>
+      </Link>
     </div>
   );
 }

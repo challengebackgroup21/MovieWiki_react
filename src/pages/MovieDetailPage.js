@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 function MovieDetailPage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
-  const [post, setPost] = useState('');
+  const [post, setPost] = useState();
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem('userInfo'))
   );
@@ -12,12 +12,16 @@ function MovieDetailPage() {
     axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
       setMovie(res.data);
     });
-    axios.get(`http://localhost:3001/post/${movieId}/record`).then((res) => {
-      // post가 없을 때
-      setPost(res.data[0]);
-    });
+    axios.get(`http://localhost:3001/movies/${movieId}/view`);
+    axios
+      .get(`http://localhost:3001/post/${movieId}/record/latest`)
+      .then((res) => {
+        setPost(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data.error);
+      });
   }, []);
-
   function likeSubmitHandler() {
     axios
       .patch(
@@ -34,7 +38,6 @@ function MovieDetailPage() {
         alert(err);
       });
   }
-
   return (
     <div>
       <h1>Movie Info</h1>
@@ -70,12 +73,23 @@ function MovieDetailPage() {
         ></div>
         <div>version : {post?.version}</div>
       </div>
-      <Link style={{ padding: '0.5rem' }} to={`/movie/update/${movieId}`}>
-        수정하기
-      </Link>
-      <Link style={{ padding: '0.5rem' }} to={`/movie/version/${movieId}`}>
-        히스토리
-      </Link>
+      <button>
+        <Link
+          style={{ padding: '0.5rem', textDecoration: 'none', color: 'black' }}
+          to={`/movie/update/${movieId}`}
+        >
+          수정하기
+        </Link>
+      </button>
+      <button style={{ margin: '0 0.5rem' }}>
+        <Link
+          style={{ padding: '0.5rem', textDecoration: 'none', color: 'black' }}
+          to={`/movie/version/${movieId}`}
+        >
+          히스토리
+        </Link>
+      </button>
+
       <button onClick={likeSubmitHandler}>좋아요</button>
     </div>
   );

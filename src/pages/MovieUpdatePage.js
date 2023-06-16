@@ -27,17 +27,16 @@ function MovieUpdatePage() {
     axios
       .get(`http://localhost:3001/post/${movieId}/record/latest`)
       .then((res) => {
+        console.log(res.data);
         setPost(res.data ? res.data : '');
         setContent(res.data.content ? res.data.content : '');
         setComment(res.data?.comment ? res.data.comment : '');
       })
       .catch((err) => {});
   }, []);
-
   const handleChangeComment = (e) => {
     setComment(e.target.value);
   };
-
   const submitHandler = (e) => {
     e.preventDefault();
     axios
@@ -46,7 +45,7 @@ function MovieUpdatePage() {
         {
           content: content,
           comment: comment,
-          version: post.version ? post.version : '',
+          version: post.version ? post.version : null,
         },
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }
@@ -56,6 +55,7 @@ function MovieUpdatePage() {
         navigate(-1);
       })
       .catch((err) => {
+        console.log(err.response);
         if (err.response.status === 409) {
           axios
             .get(`http://localhost:3001/post/${movieId}/record/latest`)
@@ -70,7 +70,6 @@ function MovieUpdatePage() {
         }
       });
   };
-
   return (
     <div>
       <h1>Movie Info</h1>
@@ -105,11 +104,12 @@ function MovieUpdatePage() {
         </div>
         <div>version : {post?.version}</div>
         <div>
+          코맨트:
           <textarea
             name="comment"
             id="comment"
             cols="30"
-            rows="2"
+            rows="1"
             onChange={handleChangeComment}
             placeholder="comment"
             value={comment}
