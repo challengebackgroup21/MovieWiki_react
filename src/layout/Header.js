@@ -36,11 +36,13 @@ function Header() {
       style={{
         display: 'flex',
         justifyContent: 'space-between',
-        fontSize: '1.5rem',
+        fontSize: '1.7rem',
       }}
     >
       <nav style={{ marginLeft: '1rem' }}>
-        <Link to="/">MovieWiki</Link>
+        <Link style={{ fontWeight: 'bold' }} to="/">
+          MovieWiki
+        </Link>
       </nav>
       <nav style={{ marginRight: '1rem' }}>
         {isLogin ? (

@@ -1,3 +1,11 @@
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Heading,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +15,8 @@ function ReportBoardPage() {
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem('userInfo'))
   );
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,9 +28,12 @@ function ReportBoardPage() {
       )
       .then((res) => {
         setReports(res.data);
+        console.log(reports);
+        setLoading(false);
       })
       .catch((err) => {
         alert('로딩 실패');
+        setLoading(false);
         navigate(-1);
       });
   }, []);
@@ -54,61 +67,85 @@ function ReportBoardPage() {
       .catch((err) => console.log(err));
   };
 
-  return (
-    <div>
-      <h1>신고 목록 게시판</h1>
+  return loading ? (
+    <Spinner />
+  ) : (
+    <Box
+      border={'2px solid black'}
+      w={'80%'}
+      m={'5% auto'}
+      h={'100vh'}
+      p={'1rem'}
+      overflow={'auto'}
+    >
+      <Heading>신고 목록 게시판</Heading>
       <div
         className="board"
         style={{
           display: 'flex',
           flexDirection: 'column',
-          width: '50%',
-          margin: '0 auto',
+          width: '80%',
+          margin: '5px auto',
         }}
       >
         {reports.map((report) => {
           return (
-            <div
-              style={{ border: '2px solid black', margin: '1rem 0' }}
+            <Box
+              style={{ border: '2px solid black', margin: '0.8rem 0' }}
+              p={'1rem'}
+              textAlign={'left'}
               className="report"
+              fontWeight={'semibold'}
+              fontSize={'lg'}
+              boxShadow={'dark-lg'}
             >
-              <span>notiId: {report.notiId}</span>
-              <br />
-              <span>movieId: {report.movieId}</span>
-              <br />
-              <span>postId: {report.postId}</span>
-              <br />
-              <span>reporter: {report.reporterId.userId}</span>
-              <br />
-              <span>reported: {report.reportedId.userId}</span>
-              <br />
-              <span>notificationContent: {report.notificationContent}</span>
-              <br />
-              {report.status === 'AWAIT' ? (
-                <div>
-                  <button
+              <Text>notiId: {report?.notiId}</Text>
+
+              <Text>movieId: {report?.movieId}</Text>
+
+              <Text>postId: {report?.postId}</Text>
+
+              <Text>신고한 사람: {report?.reporterId}</Text>
+
+              <Text>신고 당한 사람: {report?.reportedId}</Text>
+
+              <Text>신고 내용: {report?.notificationContent}</Text>
+
+              {report?.status === 'AWAIT' ? (
+                <ButtonGroup
+                  display={'flex'}
+                  justifyContent={'right'}
+                  mr={'0.5rem'}
+                >
+                  <Button
+                    colorScheme="green"
+                    color={'blackAlpha.700'}
+                    variant={'solid'}
                     onClick={() => {
                       acceptReport(report.notiId);
                     }}
                   >
                     승인
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    color={'blackAlpha.700'}
+                    variant={'solid'}
                     onClick={() => {
                       rejectReport(report.notiId);
                     }}
                   >
                     거부
-                  </button>
-                </div>
+                  </Button>
+                </ButtonGroup>
               ) : (
-                <span>status: {report.status}</span>
+                <span>처리 상태: {report.status}</span>
               )}
-            </div>
+            </Box>
           );
         })}
       </div>
-    </div>
+    </Box>
   );
 }
 

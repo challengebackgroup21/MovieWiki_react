@@ -1,6 +1,19 @@
+import { CheckCircleIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Heading,
+  Highlight,
+  Input,
+  ListIcon,
+  ListItem,
+  OrderedList,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
 import 'react-quill/dist/quill.snow.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Editor from '../components/Editor';
@@ -14,6 +27,8 @@ function MovieUpdatePage() {
   const [userInfo, setUserInfo] = useState();
   const [lastestPost, setLastestPost] = useState();
   const [lastestActive, setLastestActive] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,8 +46,11 @@ function MovieUpdatePage() {
         setPost(res.data ? res.data : '');
         setContent(res.data.content ? res.data.content : '');
         setComment(res.data?.comment ? res.data.comment : '');
+        setLoading(false);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setLoading(false);
+      });
   }, []);
   const handleChangeComment = (e) => {
     setComment(e.target.value);
@@ -70,79 +88,167 @@ function MovieUpdatePage() {
         }
       });
   };
-  return (
-    <div>
-      <h1>Movie Info</h1>
-      <div className="movieInfo">
-        <div style={{ padding: '1rem' }}>
-          <h4>제목: {movie.movieNm}</h4>
-          <div>
+  const contentArr = lastestPost?.content.split(/(?<=<\/p>)/gi);
+  return loading ? (
+    <Spinner size="lg" />
+  ) : (
+    <Box
+      w={'60%'}
+      h={'100vh'}
+      m={'1rem auto 1rem'}
+      border={'1px'}
+      overflow={'auto'}
+    >
+      <Heading p={'1rem'} mb={'3%'}>
+        {movie?.movieNm}
+      </Heading>
+      <Box className="movieInfo">
+        <OrderedList
+          m={'0 auto'}
+          w={'50%'}
+          fontSize={'xl'}
+          listStyleType={'none'}
+          textAlign={'left'}
+        >
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
             감독:
-            {movie.directors &&
-              movie.directors.map((dircetor) => {
-                return dircetor;
+            {movie?.directors &&
+              movie?.directors.map((dircetor) => {
+                return ` ${dircetor}`;
               })}
-          </div>
-          <div>장르: {movie.genreAlt}</div>
-          <div>
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            장르: {movie?.genreAlt}
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
             출연 배우:{' '}
-            {movie.actors &&
-              movie.actors.map((actor) => {
+            {movie?.actors &&
+              movie?.actors.map((actor) => {
                 return `${actor} `;
               })}
-          </div>
-          <div>상영 시간: {movie.showTm} 분</div>
-          <div>관람 등급: {movie.watchGradeNm}</div>
-          <div>views: {movie.views}</div>
-          <div>likes: {movie.likes}</div>
-        </div>
-      </div>
-      <div className="postInfo">
-        설명
-        <div>
-          <Editor onChange={setContent} value={content} />
-        </div>
-        <div>version : {post?.version}</div>
-        <div>
-          코맨트:
-          <textarea
-            name="comment"
-            id="comment"
-            cols="30"
-            rows="1"
-            onChange={handleChangeComment}
-            placeholder="comment"
-            value={comment}
-          ></textarea>
-        </div>
-      </div>
-      {lastestActive ? (
-        <div style={{ color: 'green' }} className="lastestPostInfo">
-          <div>현재 최신 버전</div>
-          <div>작성자 : {lastestPost?.userId}</div>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: `내용${lastestPost?.content}`,
-            }}
-          ></div>
-          <div>작성자 코멘트 : {lastestPost?.comment}</div>
-          <div>변경 시간 : {lastestPost?.createdAt}</div>
-          <div>version : {lastestPost?.version}</div>
-        </div>
-      ) : (
-        ''
-      )}
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            상영 시간: {movie?.showTm} 분
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            관람 등급: {movie?.watchGradeNm}
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            views: {movie?.views}
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            likes: {movie?.likes}
+          </ListItem>
+        </OrderedList>
+      </Box>
 
-      <button
-        onClick={submitHandler}
-        style={{ padding: '0.2rem', margin: '10px 0' }}
+      <Heading m={'1rem'}>INFO</Heading>
+      <Box
+        display={'flex'}
+        justifyContent={'space-around'}
+        className="postInfo"
       >
-        수정하기
-      </button>
-      <Link to={`/movie/${movieId}`}>
-        <button style={{ padding: '0.2rem', margin: '10px' }}>돌아가기</button>
-      </Link>
-    </div>
+        <Box
+          className="post"
+          m={'0 auto'}
+          w={'50%'}
+          fontSize={'xl'}
+          textAlign={'left'}
+        >
+          <Editor
+            style={{ margin: '0' }}
+            onChange={setContent}
+            value={content}
+          />
+
+          <Box mt={'1rem'}>
+            Comment
+            <Input
+              name="comment"
+              id="comment"
+              onChange={handleChangeComment}
+              placeholder="comment"
+              value={comment}
+            />
+          </Box>
+          <Box mt={'1rem'}>version : {post?.version}</Box>
+        </Box>
+
+        {lastestActive ? (
+          <Box
+            className="lastestPostInfo"
+            m={'0 auto'}
+            w={'38%'}
+            fontSize={'xl'}
+            textAlign={'left'}
+          >
+            <Heading size={'md'} m={'0 0 1rem 0'} lineHeight="tall">
+              <Highlight
+                query="현재 최신 버전"
+                styles={{ px: '5', py: '2', rounded: 'full', bg: 'red.200' }}
+              >
+                현재 최신 버전
+              </Highlight>
+            </Heading>
+            {lastestPost?.thisVersionDiff.map((di) => {
+              if (di.type === 'remove') {
+                const convertContent =
+                  "<div class='red'>" + di.value + '</p></div>';
+                contentArr[di.idx] = convertContent;
+              } else if (di.type === 'add') {
+                const convertContent =
+                  "<div class='green'>" + di.value + '</p></div>';
+                contentArr[di.idx] = convertContent;
+              }
+            })}
+            <Box
+              className="contentBox"
+              border={'1px solid'}
+              borderColor={'blackAlpha.300'}
+              p={'0.5rem'}
+            >
+              <Box
+                mb={'2rem'}
+                dangerouslySetInnerHTML={{
+                  __html: `${contentArr.join('')}`,
+                }}
+              ></Box>
+              <Text>Comment : {lastestPost?.comment}</Text>
+              <Text>version : {lastestPost?.version}</Text>
+            </Box>
+          </Box>
+        ) : (
+          ''
+        )}
+      </Box>
+
+      <ButtonGroup
+        m={'3rem'}
+        display={'flex'}
+        justifyContent={'right'}
+        colorScheme="blackAlpha"
+      >
+        <Button
+          onClick={submitHandler}
+          color={'blackAlpha.700'}
+          variant={'solid'}
+        >
+          수정하기
+        </Button>
+        <Link to={`/movie/${movieId}`}>
+          <Button color={'blackAlpha.700'} variant={'solid'}>
+            돌아가기
+          </Button>
+        </Link>
+      </ButtonGroup>
+    </Box>
   );
 }
 

@@ -23,16 +23,12 @@ code {
   margin: 5px 5px;
 }
 
-.report-box {
-  margin: 10px;
-}
-
 .red {
-  background-color: rgb(235, 148, 148);
+  background-color: rgb(241, 159, 159);
 }
 
 .green {
-  background-color: rgb(109, 197, 109);
+  background-color: rgb(131, 211, 131);
 }
 p {
   margin: 0px 0px 0px 0px;

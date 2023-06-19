@@ -16,7 +16,7 @@ export default function Editor({ value, onChange }) {
     ],
   };
   return (
-    <div className="content" style={{ width: '40%', margin: '0 auto' }}>
+    <div className="content" style={{ margin: '0 auto' }}>
       <ReactQuill
         value={value}
         theme={'snow'}

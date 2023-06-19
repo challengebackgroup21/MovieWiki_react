@@ -1,7 +1,7 @@
+import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 function TrendingList() {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
@@ -18,8 +18,10 @@ function TrendingList() {
   }, []);
 
   return (
-    <div>
-      <h3>인기 리스트</h3>
+    <div style={{ margin: '3% 0' }}>
+      <Text m={'1rem 0'} fontSize="3xl">
+        인기 리스트
+      </Text>
 
       <div
         style={{
@@ -31,34 +33,50 @@ function TrendingList() {
           return (
             <Link
               style={{
-                padding: '0.5rem',
-                color: 'black',
-                textDecoration: 'none',
-                backgroundColor: '#eee',
-                border: '1px solid black',
-                width: '17%',
+                backgroundColor: '',
+
+                width: '19%',
               }}
               to={`/movie/${movie.movieId}`}
             >
-              <div style={{ padding: '1rem' }} key={movie.movieId}>
-                <h4>제목: {movie.movieNm}</h4>
-                <div>
-                  감독:
-                  {movie.directors}
-                </div>
-                <div>장르: {movie.genreAlt}</div>
-                <div>
-                  출연 배우:{' '}
-                  {movie?.actors &&
-                    movie?.actors.map((actor) => {
-                      return `${actor} `;
-                    })}
-                </div>
-                <div>상영 시간: {movie.showTm} 분</div>
-                <div>관람 등급: {movie.watchGradeNm}</div>
-                <div>views: {movie.views}</div>
-                <div>likes: {movie.likes}</div>
-              </div>
+              <Card
+                overflow={'auto'}
+                scroll
+                size={'sm'}
+                variant={'outline'}
+                style={{ height: '400px' }}
+                border={'1px'}
+                margin={'0 5px'}
+                shadow={'dark-lg'}
+                fontSize={'xl'}
+                key={movie.movieId}
+                _hover={{
+                  transform: 'translate(0, -1rem)',
+                  transition: '0.6s',
+                }}
+              >
+                <CardHeader>
+                  <Heading size="md">{movie.movieNm}</Heading>
+                </CardHeader>
+                <CardBody textAlign={'left'}>
+                  <div>
+                    감독:
+                    {movie.directors}
+                  </div>
+                  <div>장르: {movie.genreAlt}</div>
+                  <div>
+                    출연 배우:{' '}
+                    {movie?.actors &&
+                      movie?.actors.map((actor) => {
+                        return `${actor} `;
+                      })}
+                  </div>
+                  <div>상영 시간: {movie.showTm} 분</div>
+                  <div>관람 등급: {movie.watchGradeNm}</div>
+                  <div>views: {movie.views}</div>
+                  <div>likes: {movie.likes}</div>
+                </CardBody>
+              </Card>
             </Link>
           );
         })}

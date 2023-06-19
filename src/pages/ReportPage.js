@@ -1,3 +1,4 @@
+import { Box, Button, ButtonGroup, Heading, Input } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -45,14 +46,24 @@ function ReportPage() {
   };
 
   return (
-    <div style={{ marginTop: '33%' }}>
-      Report
-      <div style={{ fontWeight: '600' }}>
+    <Box
+      border={'1px black solid'}
+      w={'80%'}
+      m={'5% auto'}
+      h={'50vh'}
+      overflow={'auto'}
+      p={'10%'}
+    >
+      <Heading>Report</Heading>
+      <div style={{ fontWeight: '600', margin: '1rem' }}>
         movie: {movieId}, version: {version}
       </div>
-      <div className="report-box">
-        신고 내용:
-        <input
+      <div className="report-box" style={{ fontWeight: '600', margin: '1rem' }}>
+        <Input
+          w={'50%'}
+          mb={'1rem'}
+          textAlign={'center'}
+          placeholder="신고 내용"
           type="text"
           name="notificationContent"
           id="notificationContent"
@@ -61,11 +72,21 @@ function ReportPage() {
         />
         <div>version : {version}</div>
       </div>
-      <button onClick={submitReportHandler}>신고</button>
-      <Link to={`/movie/version/${movieId}`}>
-        <button style={{ padding: '0.2rem', margin: '10px' }}>돌아가기</button>
-      </Link>
-    </div>
+      <ButtonGroup colorScheme="blackAlpha">
+        <Link to={`/movie/version/${movieId}`}>
+          <Button color={'blackAlpha.700'} variant={'solid'}>
+            돌아가기
+          </Button>
+        </Link>
+        <Button
+          color={'blackAlpha.700'}
+          variant={'solid'}
+          onClick={submitReportHandler}
+        >
+          신고하기
+        </Button>
+      </ButtonGroup>
+    </Box>
   );
 }
 

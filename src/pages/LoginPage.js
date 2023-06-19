@@ -1,3 +1,4 @@
+import { Button, Input, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import React, { useState } from 'react';
@@ -39,25 +40,40 @@ function LoginPage() {
       style={{
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'center',
         width: '33%',
         margin: '0 auto',
       }}
       onSubmit={login}
     >
-      <h1>Login</h1>
-      <input
+      <Text fontSize={'5xl'} fontWeight={'bold'} margin={'10% 0 20% 0'}>
+        Login
+      </Text>
+      <Input
         type="text"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="email"
+        border={'1px'}
+        m={'5% 0'}
       />
-      <input
+      <Input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        border={'1px'}
         placeholder="password"
       />
-      <button>Login</button>
+
+      <Button
+        onClick={login}
+        mt={'5%'}
+        colorScheme="blackAlpha"
+        color={'blackAlpha.700'}
+        variant={'solid'}
+      >
+        Login
+      </Button>
     </form>
   );
 }

@@ -1,7 +1,8 @@
+import { Heading } from '@chakra-ui/react';
 import React from 'react';
 
 function NotFoundPage() {
-  return <div>404 NotFound</div>;
+  return <Heading>404 NotFound</Heading>;
 }
 
 export default NotFoundPage;
