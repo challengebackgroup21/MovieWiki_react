@@ -50,7 +50,6 @@ function ReportPage() {
       border={'1px black solid'}
       w={'80%'}
       m={'5% auto'}
-      h={'50vh'}
       overflow={'auto'}
       p={'10%'}
     >

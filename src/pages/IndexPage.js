@@ -1,4 +1,12 @@
-import { Box, Card, Input, Select, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Card,
+  Heading,
+  Input,
+  Select,
+  Text,
+} from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
@@ -44,7 +52,7 @@ function IndexPage() {
     <div>
       <Text style={{ margin: '5% 0', fontWeight: 'bold' }} fontSize="5xl">
         <Link onClick={() => window.location.reload()} to="/">
-          <span>Movie Wiki</span>
+          <span>MOVIE WIKI</span>
         </Link>
       </Text>
 
@@ -54,7 +62,8 @@ function IndexPage() {
             onChange={handleOption}
             name="option"
             id="option"
-            size="sm"
+            size="md"
+            fontSize={'xl'}
             borderRadius={'3px'}
           >
             <option value="total">전체</option>
@@ -67,18 +76,21 @@ function IndexPage() {
         </Box>
 
         <Input
-          style={{ width: '50%', borderRadius: '10px' }}
+          style={{ width: '50%' }}
           onChange={handleSearchWord}
           type="text"
           name="search"
           id="search"
-          size="sm"
-          variant="filled"
-          bgColor={'blackAlpha.200'}
+          size="md"
+          fontSize={'xl'}
+          variant="flushed"
+          bgColor="white"
+          borderColor={'black'}
+          focusBorderColor="black"
         />
-        <button style={{ margin: '0 1rem' }}>
-          <BsSearch onClick={handleSearch} />
-        </button>
+        <Button colorScheme="blackAlpha" bgColor={'white'}>
+          <BsSearch color="black" onClick={handleSearch} />
+        </Button>
       </form>
       {!searchResultDisplay ? (
         <TrendingList />
@@ -111,9 +123,9 @@ function IndexPage() {
                   fontWeight={'500'}
                   _hover={{
                     transform: 'translate(0, -0.7rem)',
-                    transition: '0.6s',
+                    transition: '0.3s',
                   }}
-                  shadow={'dark-lg'}
+                  style={{ boxShadow: '8px 8px 6px rgba(175, 174, 183, 0.5)' }}
                 >
                   <Link
                     style={{
@@ -122,7 +134,9 @@ function IndexPage() {
                     to={`/movie/${movie.movieId}`}
                   >
                     <div style={{ padding: '1rem' }} key={movie.movieId}>
-                      <h4>제목: {movie.movieNm}</h4>
+                      <Heading size={'md'} p={'0.5rem 0'}>
+                        {movie.movieNm}
+                      </Heading>
                       <div>
                         감독:
                         {movie?.directors &&

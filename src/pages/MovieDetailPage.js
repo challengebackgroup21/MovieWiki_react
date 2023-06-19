@@ -68,8 +68,8 @@ function MovieDetailPage() {
       <Box
         className="movieInfo"
         m={'0 auto'}
-        w={'50%'}
-        p={'1rem'}
+        w={'70%'}
+        p={'2.5rem'}
         border={'2px solid'}
       >
         <OrderedList fontSize={'xl'} listStyleType={'none'} textAlign={'left'}>
@@ -117,7 +117,7 @@ function MovieDetailPage() {
         border={'2px solid'}
         className="postInfo"
         m={'0 auto'}
-        w={'50%'}
+        w={'70%'}
         p={'2.3rem'}
         fontSize={'xl'}
         textAlign={'left'}

@@ -47,12 +47,13 @@ function TrendingList() {
                 style={{ height: '400px' }}
                 border={'1px'}
                 margin={'0 5px'}
-                shadow={'dark-lg'}
                 fontSize={'xl'}
                 key={movie.movieId}
+                shadow={'lg'}
                 _hover={{
                   transform: 'translate(0, -1rem)',
-                  transition: '0.6s',
+                  transition: '0.3s',
+                  shadow: '2xl',
                 }}
               >
                 <CardHeader>

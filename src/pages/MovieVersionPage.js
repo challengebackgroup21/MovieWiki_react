@@ -89,7 +89,7 @@ function MovieVersionPage() {
               border: '1px solid black',
               overflow: 'auto',
             }}
-            shadow={'dark-lg'}
+            shadow={'2xl'}
             m={'1rem auto'}
             className="version-box"
           >

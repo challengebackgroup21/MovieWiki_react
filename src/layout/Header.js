@@ -41,7 +41,7 @@ function Header() {
     >
       <nav style={{ marginLeft: '1rem' }}>
         <Link style={{ fontWeight: 'bold' }} to="/">
-          MovieWiki
+          MOVIE WIKI
         </Link>
       </nav>
       <nav style={{ marginRight: '1rem' }}>
