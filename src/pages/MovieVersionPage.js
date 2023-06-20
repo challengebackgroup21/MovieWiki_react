@@ -22,7 +22,7 @@ function MovieVersionPage() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/post/${movieId}/record`)
+      .get(`/post/${movieId}/record`)
       .then((res) => {
         setVersions(res.data);
         setLoading(false);
@@ -38,7 +38,7 @@ function MovieVersionPage() {
     if (window.confirm('해당 버전으로 게시글을 되돌리시겠습니까?')) {
       axios
         .post(
-          `http://localhost:3001/post/${movieId}/record/${version}`,
+          `/post/${movieId}/record/${version}`,
           {
             comment: `${version} 버전으로 되돌림`,
           },
@@ -46,7 +46,7 @@ function MovieVersionPage() {
           { withCrdentilas: true }
         )
         .then((res) => {
-          alert(res.data);
+          alert('버전 되돌리기 성공');
           window.location.reload();
         })
         .catch((err) => {
@@ -81,7 +81,6 @@ function MovieVersionPage() {
       )}
       {versions.map((version) => {
         const contentArr = version?.content.split(/(?<=<\/p>)/gi);
-
         return (
           <Card
             style={{
@@ -111,6 +110,7 @@ function MovieVersionPage() {
                 </Text>
                 <Divider borderColor={'black'} />
                 <Box
+                  className="contentArr"
                   fontSize={'lg'}
                   style={{ marginTop: '0.5rem' }}
                   dangerouslySetInnerHTML={{

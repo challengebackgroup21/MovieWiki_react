@@ -30,15 +30,11 @@ function IndexPage() {
     e.preventDefault();
 
     axios
-      .get(
-        `http://localhost:3001/movies/search?option=${option}&query=` +
-          searchWord,
-        {
-          headers: {
-            'Content-type': 'application/json; charset=utf-8',
-          },
-        }
-      )
+      .get(`/movies/search?option=${option}&query=` + searchWord, {
+        headers: {
+          'Content-type': 'application/json; charset=utf-8',
+        },
+      })
       .then((res) => {
         setSearchReulstDisplay(true);
         setSearchMovies(res.data);

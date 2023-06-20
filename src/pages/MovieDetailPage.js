@@ -22,12 +22,12 @@ function MovieDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
+    axios.get(`/movies/${movieId}`).then((res) => {
       setMovie(res.data);
     });
-    axios.get(`http://localhost:3001/movies/${movieId}/view`);
+    axios.get(`/movies/${movieId}/view`);
     axios
-      .get(`http://localhost:3001/post/${movieId}/record/latest`)
+      .get(`/post/${movieId}/record/latest`)
       .then((res) => {
         setPost(res.data);
         setLoading(false);
@@ -41,7 +41,7 @@ function MovieDetailPage() {
   function likeSubmitHandler() {
     axios
       .patch(
-        `http://localhost:3001/movie/${movieId}/like`,
+        `/${movieId}/like`,
         {},
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }

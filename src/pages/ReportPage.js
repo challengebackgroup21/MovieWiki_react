@@ -26,7 +26,7 @@ function ReportPage() {
     e.preventDefault();
     axios
       .post(
-        `http://localhost:3001/notifications/${postId}`,
+        `/notifications/${postId}`,
         {
           postId: postId,
           notificationContent: notificationContent,

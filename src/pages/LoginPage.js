@@ -12,7 +12,7 @@ function LoginPage() {
     ev.preventDefault();
     const response = await axios
       .post(
-        'http://localhost:3001/auth/login',
+        '/auth/login',
         {
           email: email,
           password: password,

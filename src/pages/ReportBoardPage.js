@@ -22,7 +22,7 @@ function ReportBoardPage() {
   useEffect(() => {
     axios
       .get(
-        'http://localhost:3001/notifications',
+        '/notifications',
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }
       )
@@ -40,7 +40,7 @@ function ReportBoardPage() {
   const acceptReport = (notiId) => {
     axios
       .patch(
-        `http://localhost:3001/notifications/${notiId}/accept`,
+        `/notifications/${notiId}/accept`,
         { status: 'ACCEPT' },
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }
@@ -55,7 +55,7 @@ function ReportBoardPage() {
   const rejectReport = (notiId) => {
     axios
       .patch(
-        `http://localhost:3001/notifications/${notiId}/reject`,
+        `/notifications/${notiId}/reject`,
         { status: 'REJECT' },
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }

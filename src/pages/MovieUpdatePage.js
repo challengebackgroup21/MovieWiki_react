@@ -36,11 +36,11 @@ function MovieUpdatePage() {
       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
     }
 
-    axios.get(`http://localhost:3001/movies/${movieId}`).then((res) => {
+    axios.get(`/movies/${movieId}`).then((res) => {
       setMovie(res.data);
     });
     axios
-      .get(`http://localhost:3001/post/${movieId}/record/latest`)
+      .get(`/post/${movieId}/record/latest`)
       .then((res) => {
         console.log(res.data);
         setPost(res.data ? res.data : '');
@@ -59,7 +59,7 @@ function MovieUpdatePage() {
     e.preventDefault();
     axios
       .post(
-        `http://localhost:3001/post/${movieId}/record`,
+        `/post/${movieId}/record`,
         {
           content: content,
           comment: comment,
@@ -76,7 +76,7 @@ function MovieUpdatePage() {
         console.log(err.response);
         if (err.response.status === 409) {
           axios
-            .get(`http://localhost:3001/post/${movieId}/record/latest`)
+            .get(`/post/${movieId}/record/latest`)
             .then((res) => {
               alert(
                 '현재 수정하고 있는 버전의 이전 버전이 누군가의 수정에 의해 변경되었습니다. 수정 사항들을 ctrl+C로 저장한 후 다시 시도해주세요.'

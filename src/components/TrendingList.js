@@ -6,7 +6,7 @@ function TrendingList() {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/movies/like?cnt=5`, {
+      .get(`/movies/like?cnt=5`, {
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },
@@ -14,13 +14,15 @@ function TrendingList() {
       .then((res) => {
         setMovies(res.data);
       })
-      .catch(setMovies([]));
+      .catch((err) => {
+        console.log(err.response);
+      });
   }, []);
 
   return (
     <div style={{ margin: '3% 0' }}>
-      <Text m={'1rem 0'} fontSize="3xl">
-        인기 리스트
+      <Text m={'1rem 0'} fontSize="3xl" fontWeight={'medium'}>
+        실시간 인기 영화
       </Text>
 
       <div
