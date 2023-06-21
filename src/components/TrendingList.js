@@ -21,7 +21,7 @@ function TrendingList() {
 
   return (
     <div style={{ margin: '3% 0' }}>
-      <Text m={'1rem 0'} fontSize="3xl" fontWeight={'medium'}>
+      <Text m={'2rem 0'} fontSize="4xl" fontWeight={'semibold'}>
         실시간 인기 영화
       </Text>
 
@@ -49,7 +49,7 @@ function TrendingList() {
                 style={{ height: '400px' }}
                 border={'1px'}
                 margin={'0 5px'}
-                fontSize={'xl'}
+                fontSize={'2xl'}
                 key={movie.movieId}
                 shadow={'lg'}
                 _hover={{

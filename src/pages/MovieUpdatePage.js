@@ -24,7 +24,9 @@ function MovieUpdatePage() {
   const [post, setPost] = useState('');
   const [content, setContent] = useState('');
   const [comment, setComment] = useState('');
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState(() =>
+    JSON.parse(localStorage.getItem('userInfo'))
+  );
   const [lastestPost, setLastestPost] = useState();
   const [lastestActive, setLastestActive] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -32,10 +34,6 @@ function MovieUpdatePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem('userInfo'))) {
-      setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
-    }
-
     axios.get(`/movies/${movieId}`).then((res) => {
       setMovie(res.data);
     });
