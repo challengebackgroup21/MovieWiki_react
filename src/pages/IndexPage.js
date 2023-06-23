@@ -44,6 +44,26 @@ function IndexPage() {
         alert(err.response.data.error);
       });
   };
+
+  const handleSearchKeyPress = (e) => {
+    e.preventDefault();
+    if (e.key === 'Enter') {
+      axios
+        .get(`/movies/search?option=${option}&query=` + searchWord, {
+          headers: {
+            'Content-type': 'application/json; charset=utf-8',
+          },
+        })
+        .then((res) => {
+          setSearchReulstDisplay(true);
+          setSearchMovies(res.data);
+        })
+        .catch((err) => {
+          setSearchMovies([]);
+          alert(err.response.data.error);
+        });
+    }
+  };
   return (
     <div>
       <Text style={{ margin: '5% 0', fontWeight: 'bold' }} fontSize="5xl">
@@ -83,6 +103,7 @@ function IndexPage() {
           bgColor="white"
           borderColor={'black'}
           focusBorderColor="black"
+          onKeyDown={(e) => handleSearchKeyPress(e)}
         />
         <Button colorScheme="blackAlpha" bgColor={'white'}>
           <BsSearch color="black" onClick={handleSearch} />
