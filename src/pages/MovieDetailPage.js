@@ -41,7 +41,7 @@ function MovieDetailPage() {
   function likeSubmitHandler() {
     axios
       .patch(
-        `/${movieId}/like`,
+        `/movie/${movieId}/like`,
         {},
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }
