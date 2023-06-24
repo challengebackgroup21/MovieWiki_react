@@ -4,6 +4,7 @@ import {
   Card,
   FormControl,
   Heading,
+  Image,
   Input,
   Select,
   Spinner,
@@ -201,6 +202,17 @@ function IndexPage() {
                       <Heading size={'lg'} p={'0.5rem 0'}>
                         {movie.movieNm}
                       </Heading>
+                      {movie.imageUrl ? (
+                        <Image
+                          src={movie?.imageUrl}
+                          w={'200px'}
+                          alt="movieImg"
+                          m={'1rem 0'}
+                        />
+                      ) : (
+                        ''
+                      )}
+
                       <div>
                         감독:
                         {movie?.directors &&

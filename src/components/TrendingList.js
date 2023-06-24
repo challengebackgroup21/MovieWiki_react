@@ -1,4 +1,11 @@
-import { Card, CardBody, CardHeader, Heading, Text } from '@chakra-ui/react';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Image,
+  Text,
+} from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,7 +26,7 @@ function TrendingList() {
         console.log(err.response);
       });
   }, []);
-
+  console.log(movies);
   return (
     <div style={{ margin: '3% 0' }}>
       <Text m={'2rem 0'} fontSize="4xl" fontWeight={'semibold'}>
@@ -61,7 +68,29 @@ function TrendingList() {
                   transition: '0.3s',
                   shadow: '2xl',
                 }}
+                css={{
+                  '&::-webkit-scrollbar': {
+                    width: '4px',
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    width: '6px',
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    background: 'white',
+                    borderRadius: '24px',
+                  },
+                }}
               >
+                {movie.imageUrl ? (
+                  <Image
+                    src={movie?.imageUrl}
+                    w={'150px'}
+                    alt="movieImg"
+                    m={'1rem auto'}
+                  />
+                ) : (
+                  ''
+                )}
                 <CardHeader>
                   <Heading size="lg">{movie.movieNm}</Heading>
                 </CardHeader>
