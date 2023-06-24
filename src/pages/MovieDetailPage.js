@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Heading,
+  Image,
   ListIcon,
   ListItem,
   OrderedList,
@@ -37,7 +38,6 @@ function MovieDetailPage() {
         setLoading(false);
       });
   }, []);
-
   function likeSubmitHandler() {
     axios
       .patch(
@@ -72,6 +72,16 @@ function MovieDetailPage() {
         p={'2.5rem'}
         border={'2px solid'}
       >
+        {movie.imageUrl ? (
+          <Image
+            src={movie?.imageUrl}
+            w={'150px'}
+            alt="movieImg"
+            m={'1rem auto'}
+          />
+        ) : (
+          ''
+        )}
         <OrderedList fontSize={'xl'} listStyleType={'none'} textAlign={'left'}>
           <ListItem>
             <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
