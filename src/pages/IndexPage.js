@@ -146,9 +146,8 @@ function IndexPage() {
           id="search"
           size="md"
           fontSize={'xl'}
-          variant="flushed"
           bgColor="rgb(18, 17, 17)"
-          borderColor={'black'}
+          border={'2px solid white'}
           focusBorderColor="black"
         />
         <Button colorScheme="black">

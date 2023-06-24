@@ -81,10 +81,7 @@ function MovieVersionPage() {
         ''
       )}
       {versions.map((version) => {
-        console.log(version.content, version.diff);
-
         const contentArr = version?.content.split(/(?<=<\/p>)/gi);
-
         return (
           <Card
             style={{
