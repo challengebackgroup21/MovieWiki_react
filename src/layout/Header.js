@@ -1,3 +1,4 @@
+import { Button } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ function Header() {
       }}
     >
       <nav style={{ marginLeft: '1rem' }}>
-        <Link style={{ fontWeight: 'bold' }} to="/">
+        <Link className="indexHead" style={{ fontWeight: 'bold' }} to="/">
           MOVIE WIKI
         </Link>
       </nav>
@@ -50,13 +51,17 @@ function Header() {
             <div style={{ display: 'inline-block', marginRight: '1rem' }}>
               {userEmail}
             </div>
-            <Link onClick={logout}>logout</Link>
+            <Link onClick={logout}>
+              <Button className="headerBtn">logout</Button>
+            </Link>
           </>
         ) : (
           <>
-            <Link to="/login">login</Link>
+            <Link to="/login">
+              <Button className="headerBtn">login</Button>
+            </Link>
             <Link to="/signup" style={{ paddingLeft: '1rem' }}>
-              signup
+              <Button className="headerBtn">signup</Button>
             </Link>
           </>
         )}

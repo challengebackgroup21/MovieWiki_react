@@ -69,7 +69,8 @@ function LoginPage() {
         onClick={login}
         mt={'5%'}
         colorScheme="blackAlpha"
-        color={'blackAlpha.700'}
+        color={'white.700'}
+        border={'1px white solid'}
         variant={'solid'}
       >
         Login

@@ -73,12 +73,17 @@ function ReportPage() {
       </div>
       <ButtonGroup colorScheme="blackAlpha">
         <Link to={`/movie/version/${movieId}`}>
-          <Button color={'blackAlpha.700'} variant={'solid'}>
+          <Button
+            color={'white.700'}
+            border={'1px white solid'}
+            variant={'solid'}
+          >
             돌아가기
           </Button>
         </Link>
         <Button
-          color={'blackAlpha.700'}
+          color={'white.700'}
+          border={'1px white solid'}
           variant={'solid'}
           onClick={submitReportHandler}
         >

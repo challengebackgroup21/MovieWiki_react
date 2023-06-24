@@ -67,7 +67,8 @@ function MovieUpdatePage() {
         { withCrdentilas: true }
       )
       .then((res) => {
-        alert(res.data.message);
+        console.log(res);
+        alert('수정 성공');
         navigate(-1);
       })
       .catch((err) => {
@@ -109,7 +110,7 @@ function MovieUpdatePage() {
           textAlign={'left'}
         >
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             감독:
             {movie?.directors &&
               movie?.directors.map((dircetor) => {
@@ -117,11 +118,11 @@ function MovieUpdatePage() {
               })}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             장르: {movie?.genreAlt}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             출연 배우:{' '}
             {movie?.actors &&
               movie?.actors.map((actor) => {
@@ -129,19 +130,19 @@ function MovieUpdatePage() {
               })}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             상영 시간: {movie?.showTm} 분
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             관람 등급: {movie?.watchGradeNm}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             views: {movie?.views}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             likes: {movie?.likes}
           </ListItem>
         </OrderedList>
@@ -182,6 +183,8 @@ function MovieUpdatePage() {
         {lastestActive ? (
           <Box
             className="lastestPostInfo"
+            border={'2px solid white'}
+            p={'1rem'}
             m={'0 auto'}
             w={'38%'}
             fontSize={'xl'}
@@ -235,13 +238,18 @@ function MovieUpdatePage() {
       >
         <Button
           onClick={submitHandler}
-          color={'blackAlpha.700'}
+          color={'white.700'}
+          border={'1px white solid'}
           variant={'solid'}
         >
           수정하기
         </Button>
         <Link to={`/movie/${movieId}`}>
-          <Button color={'blackAlpha.700'} variant={'solid'}>
+          <Button
+            color={'white.700'}
+            border={'1px white solid'}
+            variant={'solid'}
+          >
             돌아가기
           </Button>
         </Link>

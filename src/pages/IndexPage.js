@@ -2,9 +2,11 @@ import {
   Box,
   Button,
   Card,
+  FormControl,
   Heading,
   Input,
   Select,
+  Spinner,
   Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
@@ -17,19 +19,18 @@ function IndexPage() {
   const [searchWord, setSearchWord] = useState('');
   const [searchMovies, setSearchMovies] = useState([]);
   const [searchResultDisplay, setSearchReulstDisplay] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOption = (e) => {
     setOption(e.target.value);
   };
 
-  const handleSearchWord = (e) => {
-    setSearchWord(e.target.value);
-  };
+  const handleSearchWord = (e) => setSearchWord(e.target.value);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-
-    axios
+    setLoading(true);
+    await axios
       .get(`/movies/search?option=${option}&query=` + searchWord, {
         headers: {
           'Content-type': 'application/json; charset=utf-8',
@@ -38,15 +39,16 @@ function IndexPage() {
       .then((res) => {
         setSearchReulstDisplay(true);
         setSearchMovies(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         setSearchMovies([]);
+        setLoading(false);
         alert(err.response.data.error);
       });
   };
 
   const handleSearchKeyPress = (e) => {
-    e.preventDefault();
     if (e.key === 'Enter') {
       axios
         .get(`/movies/search?option=${option}&query=` + searchWord, {
@@ -57,24 +59,38 @@ function IndexPage() {
         .then((res) => {
           setSearchReulstDisplay(true);
           setSearchMovies(res.data);
+          setLoading(false);
         })
         .catch((err) => {
           setSearchMovies([]);
+          setLoading(false);
           alert(err.response.data.error);
         });
     }
   };
-  return (
+  return loading ? (
+    <Spinner size={'lg'} />
+  ) : (
     <div>
-      <Text style={{ margin: '5% 0', fontWeight: 'bold' }} fontSize="5xl">
+      <Text
+        className="indexHead"
+        style={{ margin: '5% 0', fontWeight: 'bold' }}
+        fontSize="7xl"
+      >
         <Link onClick={() => window.location.reload()} to="/">
           <span>MOVIE WIKI</span>
         </Link>
       </Text>
 
-      <form style={{ display: 'flex', justifyContent: 'center' }}>
+      <FormControl
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Box w="100px" m="0 0.5rem">
           <Select
+            bgColor={'rgb(18, 17, 17)'}
             onChange={handleOption}
             name="option"
             id="option"
@@ -82,33 +98,63 @@ function IndexPage() {
             fontSize={'xl'}
             borderRadius={'3px'}
           >
-            <option value="total">전체</option>
-            <option value="movieNm">제목</option>
-            <option value="directors">감독</option>
-            <option value="genreAlt">장르</option>
-            <option value="nationAlt">제작국가</option>
-            <option value="openDt">개봉년도</option>
+            <option
+              style={{ backgroundColor: 'rgb(18, 17, 17)' }}
+              value="total"
+            >
+              전체
+            </option>
+            <option
+              style={{ backgroundColor: 'rgb(18, 17, 17)' }}
+              value="movieNm"
+            >
+              제목
+            </option>
+            <option
+              style={{ backgroundColor: 'rgb(18, 17, 17)' }}
+              value="directors"
+            >
+              감독
+            </option>
+            <option
+              style={{ backgroundColor: 'rgb(18, 17, 17)' }}
+              value="genreAlt"
+            >
+              장르
+            </option>
+            <option
+              style={{ backgroundColor: 'rgb(18, 17, 17)' }}
+              value="nationAlt"
+            >
+              제작국가
+            </option>
+            <option
+              style={{ backgroundColor: 'rgb(18, 17, 17)' }}
+              value="openDt"
+            >
+              개봉년도
+            </option>
           </Select>
         </Box>
 
         <Input
           style={{ width: '50%' }}
           onChange={handleSearchWord}
+          onKeyDown={handleSearchKeyPress}
           type="text"
           name="search"
           id="search"
           size="md"
           fontSize={'xl'}
           variant="flushed"
-          bgColor="white"
+          bgColor="rgb(18, 17, 17)"
           borderColor={'black'}
           focusBorderColor="black"
-          onKeyDown={(e) => handleSearchKeyPress(e)}
         />
-        <Button colorScheme="blackAlpha" bgColor={'white'}>
-          <BsSearch color="black" onClick={handleSearch} />
+        <Button colorScheme="black">
+          <BsSearch color="white" onClick={handleSearch} />
         </Button>
-      </form>
+      </FormControl>
       {!searchResultDisplay ? (
         <TrendingList />
       ) : (
@@ -131,6 +177,8 @@ function IndexPage() {
             searchMovies.map((movie) => {
               return (
                 <Card
+                  color={'white'}
+                  backgroundColor={'rgb(18, 17, 17)'}
                   w={'60%'}
                   variant={'outline'}
                   border={'2px'}
@@ -151,7 +199,7 @@ function IndexPage() {
                     to={`/movie/${movie.movieId}`}
                   >
                     <div style={{ padding: '1rem' }} key={movie.movieId}>
-                      <Heading size={'md'} p={'0.5rem 0'}>
+                      <Heading size={'lg'} p={'0.5rem 0'}>
                         {movie.movieNm}
                       </Heading>
                       <div>

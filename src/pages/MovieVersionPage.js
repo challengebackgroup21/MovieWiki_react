@@ -69,7 +69,8 @@ function MovieVersionPage() {
             <Button
               mt={'1rem'}
               colorScheme="blackAlpha"
-              color={'blackAlpha.700'}
+              color={'white.700'}
+              border={'1px white solid'}
               variant={'solid'}
             >
               돌아가기
@@ -80,13 +81,18 @@ function MovieVersionPage() {
         ''
       )}
       {versions.map((version) => {
+        console.log(version.content, version.diff);
+
         const contentArr = version?.content.split(/(?<=<\/p>)/gi);
+
         return (
           <Card
             style={{
               width: '60%',
-              border: '1px solid black',
               overflow: 'auto',
+              color: 'white',
+              backgroundColor: 'rgb(18, 17, 17)',
+              border: '2px solid white',
             }}
             shadow={'2xl'}
             m={'1rem auto'}
@@ -105,10 +111,10 @@ function MovieVersionPage() {
                     contentArr[di.idx] = convertContent;
                   }
                 })}
-                <Text padding={'0.5rem'} fontSize={'lg'} fontWeight={'bold'}>
+                <Text padding={'0.5rem'} fontSize={'2xl'} fontWeight={'bold'}>
                   INFO
                 </Text>
-                <Divider borderColor={'black'} />
+                <Divider borderColor={'white'} />
                 <Box
                   className="contentArr"
                   fontSize={'lg'}
@@ -120,7 +126,7 @@ function MovieVersionPage() {
               </div>
 
               <div style={{ marginTop: '1rem' }}>
-                <Divider borderColor={'black'} />
+                <Divider borderColor={'white'} />
                 작성자 코멘트 : {version?.comment}
               </div>
               <div>변경 시간 : {version?.createdAt}</div>
@@ -130,12 +136,17 @@ function MovieVersionPage() {
                 <Link
                   to={`/report/${movieId}/${version.version}/?postId=${version.postId}`}
                 >
-                  <Button color={'blackAlpha.700'} variant={'solid'}>
+                  <Button
+                    color={'white.700'}
+                    border={'1px white solid'}
+                    variant={'solid'}
+                  >
                     &nbsp;신고하기&nbsp;
                   </Button>
                 </Link>
                 <Button
-                  color={'blackAlpha.700'}
+                  color={'white.700'}
+                  border={'1px white solid'}
                   variant={'solid'}
                   onClick={(e) =>
                     revertHandler(e, version.postId, version.version)

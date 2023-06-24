@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 function TrendingList() {
   const [movies, setMovies] = useState([]);
+  const [imgUrls, setImgUrls] = useState([]);
   useEffect(() => {
     axios
       .get(`/movies/like?cnt=5`, {
@@ -42,14 +43,17 @@ function TrendingList() {
               to={`/movie/${movie.movieId}`}
             >
               <Card
+                borderRadius={'10px'}
+                bgColor={'rgb(18, 17, 17)'}
+                color={'white'}
                 overflow={'auto'}
                 scroll
                 size={'sm'}
                 variant={'outline'}
                 style={{ height: '400px' }}
-                border={'1px'}
+                border={'1px solid white'}
                 margin={'0 5px'}
-                fontSize={'2xl'}
+                fontSize={'md'}
                 key={movie.movieId}
                 shadow={'lg'}
                 _hover={{
@@ -59,7 +63,7 @@ function TrendingList() {
                 }}
               >
                 <CardHeader>
-                  <Heading size="md">{movie.movieNm}</Heading>
+                  <Heading size="lg">{movie.movieNm}</Heading>
                 </CardHeader>
                 <CardBody textAlign={'left'}>
                   <div>
@@ -70,7 +74,7 @@ function TrendingList() {
                   <div>
                     출연 배우:{' '}
                     {movie?.actors &&
-                      movie?.actors.map((actor) => {
+                      movie?.actors.slice(0, 3).map((actor) => {
                         return `${actor} `;
                       })}
                   </div>

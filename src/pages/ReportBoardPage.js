@@ -71,7 +71,7 @@ function ReportBoardPage() {
     <Spinner />
   ) : (
     <Box
-      border={'2px solid black'}
+      border={'2px solid white'}
       w={'80%'}
       m={'5% auto'}
       h={'100vh'}
@@ -91,7 +91,7 @@ function ReportBoardPage() {
         {reports.map((report) => {
           return (
             <Box
-              style={{ border: '2px solid black', margin: '0.8rem 0' }}
+              style={{ border: '2px solid white', margin: '0.8rem 0' }}
               p={'1rem'}
               textAlign={'left'}
               className="report"
@@ -119,7 +119,7 @@ function ReportBoardPage() {
                 >
                   <Button
                     colorScheme="green"
-                    color={'blackAlpha.700'}
+                    color={'white.700'}
                     variant={'solid'}
                     onClick={() => {
                       acceptReport(report.notiId);
@@ -129,7 +129,7 @@ function ReportBoardPage() {
                   </Button>
                   <Button
                     colorScheme="red"
-                    color={'blackAlpha.700'}
+                    color={'white.700'}
                     variant={'solid'}
                     onClick={() => {
                       rejectReport(report.notiId);

@@ -74,7 +74,7 @@ function MovieDetailPage() {
       >
         <OrderedList fontSize={'xl'} listStyleType={'none'} textAlign={'left'}>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             감독:
             {movie?.directors &&
               movie?.directors.map((dircetor) => {
@@ -82,11 +82,11 @@ function MovieDetailPage() {
               })}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             장르: {movie?.genreAlt}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             출연 배우:{' '}
             {movie?.actors &&
               movie?.actors.map((actor) => {
@@ -94,19 +94,19 @@ function MovieDetailPage() {
               })}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             상영 시간: {movie?.showTm} 분
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             관람 등급: {movie?.watchGradeNm}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             views: {movie?.views}
           </ListItem>
           <ListItem>
-            <ListIcon as={CheckCircleIcon} color="gray.500" />
+            <ListIcon as={CheckCircleIcon} color="rgb(229, 9, 20)" />
             likes: {movie?.likes}
           </ListItem>
         </OrderedList>
@@ -137,19 +137,28 @@ function MovieDetailPage() {
         justifyContent={'right'}
         colorScheme="blackAlpha"
       >
-        <Button color={'blackAlpha.700'} variant={'solid'}>
+        <Button
+          color={'white.700'}
+          border={'1px white solid'}
+          variant={'solid'}
+        >
           <Link style={{}} to={`/movie/update/${movieId}`}>
             수정하기
           </Link>
         </Button>
-        <Button color={'blackAlpha.700'} variant={'solid'}>
+        <Button
+          color={'white.700'}
+          border={'1px white solid'}
+          variant={'solid'}
+        >
           <Link style={{}} to={`/movie/version/${movieId}`}>
             히스토리
           </Link>
         </Button>
 
         <Button
-          color={'blackAlpha.700'}
+          color={'white.700'}
+          border={'1px white solid'}
           variant={'solid'}
           onClick={likeSubmitHandler}
         >
