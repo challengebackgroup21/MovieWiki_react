@@ -26,7 +26,7 @@ function TrendingList() {
         console.log(err.response);
       });
   }, []);
-  console.log(movies);
+
   return (
     <div style={{ margin: '3% 0' }}>
       <Text m={'2rem 0'} fontSize="4xl" fontWeight={'semibold'}>
