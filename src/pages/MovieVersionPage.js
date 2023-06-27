@@ -82,7 +82,7 @@ function MovieVersionPage() {
       )}
       {versions.map((version) => {
         const contentArr = version?.content.split(/(?<=<\/p>)/gi);
-        let cnt = 0;
+        let removeIdx = [];
         return (
           <Card
             style={{
@@ -99,14 +99,25 @@ function MovieVersionPage() {
             <CardBody>
               <div className="convercontent">
                 {version?.diff.map((di) => {
+                  let cnt = 0;
                   if (di.type === 'remove') {
                     const convertContent =
                       "<div class='red'>" + di.value + '</p></div>';
-                    cnt += 1;
-                    contentArr.splice(di.idx, 0, convertContent);
+                    removeIdx.forEach((rmIdx) => {
+                      if (Number(rmIdx) <= Number(di.idx)) {
+                        cnt += 1;
+                      }
+                    });
+                    removeIdx.push(di.idx);
+                    contentArr.splice(di.idx + cnt, 0, convertContent);
                   } else if (di.type === 'add') {
                     const convertContent =
                       "<div class='green'>" + di.value + '</p></div>';
+                    removeIdx.forEach((rmIdx) => {
+                      if (Number(rmIdx) <= Number(di.idx)) {
+                        cnt += 1;
+                      }
+                    });
                     contentArr[di.idx + cnt] = convertContent;
                   }
                 })}
