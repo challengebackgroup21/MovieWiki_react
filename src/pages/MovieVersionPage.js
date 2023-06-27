@@ -82,6 +82,7 @@ function MovieVersionPage() {
       )}
       {versions.map((version) => {
         const contentArr = version?.content.split(/(?<=<\/p>)/gi);
+        let cnt = 0;
         return (
           <Card
             style={{
@@ -101,11 +102,12 @@ function MovieVersionPage() {
                   if (di.type === 'remove') {
                     const convertContent =
                       "<div class='red'>" + di.value + '</p></div>';
-                    contentArr[di.idx] = convertContent;
+                    cnt += 1;
+                    contentArr.splice(di.idx, 0, convertContent);
                   } else if (di.type === 'add') {
                     const convertContent =
                       "<div class='green'>" + di.value + '</p></div>';
-                    contentArr[di.idx] = convertContent;
+                    contentArr[di.idx + cnt] = convertContent;
                   }
                 })}
                 <Text padding={'0.5rem'} fontSize={'2xl'} fontWeight={'bold'}>
