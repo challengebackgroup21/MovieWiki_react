@@ -83,7 +83,9 @@ function MovieUpdatePage() {
               setLastestPost(res.data);
               setLastestActive(true);
             })
-            .catch((err) => {});
+            .catch((err) => {
+              alert(err.response.data.message);
+            });
         }
       });
   };

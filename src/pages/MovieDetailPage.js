@@ -51,7 +51,7 @@ function MovieDetailPage() {
         window.location.reload();
       })
       .catch((err) => {
-        if (err.response.status === 401) alert('로그인이 필요한 기능입니다.');
+        if (err.response.status === 401) alert(err.response.data.message);
       });
   }
   return loading ? (
