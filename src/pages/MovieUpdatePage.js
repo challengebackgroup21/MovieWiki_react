@@ -74,18 +74,16 @@ function MovieUpdatePage() {
       .catch((err) => {
         console.log(err.response);
         if (err.response.status === 409) {
-          axios
-            .get(`/post/${movieId}/record/latest`)
-            .then((res) => {
-              alert(
-                '현재 수정하고 있는 버전의 이전 버전이 누군가의 수정에 의해 변경되었습니다. 수정 사항들을 ctrl+C로 저장한 후 다시 시도해주세요.'
-              );
-              setLastestPost(res.data);
-              setLastestActive(true);
-            })
-            .catch((err) => {
-              alert(err.response.data.message);
-            });
+          axios.get(`/post/${movieId}/record/latest`).then((res) => {
+            alert(
+              '현재 수정하고 있는 버전의 이전 버전이 누군가의 수정에 의해 변경되었습니다. 수정 사항들을 ctrl+C로 저장한 후 다시 시도해주세요.'
+            );
+            setLastestPost(res.data);
+            setLastestActive(true);
+          });
+        }
+        if (err.response.status === 401) {
+          alert(err.response.data.message);
         }
       });
   };
