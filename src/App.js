@@ -11,6 +11,7 @@ import MovieUpdatePage from './pages/MovieUpdatePage';
 import MovieVersionPage from './pages/MovieVersionPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ReportBoardPage from './pages/ReportBoardPage';
+import ReportDetail from './pages/ReportDetail';
 import ReportPage from './pages/ReportPage';
 import SignupPage from './pages/SignupPage';
 function App() {
@@ -42,6 +43,14 @@ function App() {
           element={
             <AdminRoute>
               <ReportBoardPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/report/:notiId"
+          element={
+            <AdminRoute>
+              <ReportDetail />
             </AdminRoute>
           }
         />

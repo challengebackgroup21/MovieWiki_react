@@ -1,14 +1,7 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Heading,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Heading, Spinner, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ReportBoardPage() {
   const [reports, setReports] = useState([]);
@@ -18,7 +11,6 @@ function ReportBoardPage() {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-
   useEffect(() => {
     axios
       .get(
@@ -28,7 +20,6 @@ function ReportBoardPage() {
       )
       .then((res) => {
         setReports(res.data);
-        console.log(reports);
         setLoading(false);
       })
       .catch((err) => {
@@ -41,7 +32,10 @@ function ReportBoardPage() {
     axios
       .patch(
         `/notifications/${notiId}/accept`,
-        { status: 'ACCEPT' },
+        {
+          status: 'ACCEPT',
+          // period: ,
+        },
         { headers: { Authorization: `Bearer ${userInfo?.accessToken}` } },
         { withCrdentilas: true }
       )
@@ -77,6 +71,18 @@ function ReportBoardPage() {
       h={'100vh'}
       p={'1rem'}
       overflow={'auto'}
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '4px',
+        },
+        '&::-webkit-scrollbar-track': {
+          width: '6px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'white',
+          borderRadius: '24px',
+        },
+      }}
     >
       <Heading>신고 목록 게시판</Heading>
       <div
@@ -89,9 +95,42 @@ function ReportBoardPage() {
         }}
       >
         {reports.map((report) => {
-          return (
+          return report?.status === 'AWAIT' ? (
+            <Link to={`/report/${report?.notiId}`}>
+              <Box
+                style={{ border: '2px solid ', margin: '0.8rem 0' }}
+                p={'1rem'}
+                textAlign={'left'}
+                className="report"
+                fontWeight={'semibold'}
+                fontSize={'lg'}
+                boxShadow={'dark-lg'}
+                _hover={{
+                  transform: 'translate(0, -1rem)',
+                  transition: '0.3s',
+                }}
+              >
+                <Text>notiId: {report?.notiId}</Text>
+
+                <Text>movieId: {report?.movieId}</Text>
+
+                <Text>postId: {report?.postId}</Text>
+
+                <Text>신고한 사람: {report?.reporterId}</Text>
+
+                <Text>신고 당한 사람: {report?.reportedId}</Text>
+
+                <Text>신고 내용: {report?.notificationContent}</Text>
+                <Text>처리 상태: {report?.status}</Text>
+              </Box>
+            </Link>
+          ) : (
             <Box
-              style={{ border: '2px solid white', margin: '0.8rem 0' }}
+              style={{
+                border: '2px solid gray',
+                color: 'gray',
+                margin: '0.8rem 0',
+              }}
               p={'1rem'}
               textAlign={'left'}
               className="report"
@@ -110,37 +149,7 @@ function ReportBoardPage() {
               <Text>신고 당한 사람: {report?.reportedId}</Text>
 
               <Text>신고 내용: {report?.notificationContent}</Text>
-
-              {report?.status === 'AWAIT' ? (
-                <ButtonGroup
-                  display={'flex'}
-                  justifyContent={'right'}
-                  mr={'0.5rem'}
-                >
-                  <Button
-                    colorScheme="green"
-                    color={'white.700'}
-                    variant={'solid'}
-                    onClick={() => {
-                      acceptReport(report.notiId);
-                    }}
-                  >
-                    승인
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    color={'white.700'}
-                    variant={'solid'}
-                    onClick={() => {
-                      rejectReport(report.notiId);
-                    }}
-                  >
-                    거부
-                  </Button>
-                </ButtonGroup>
-              ) : (
-                <span>처리 상태: {report.status}</span>
-              )}
+              <Text>처리 상태: {report?.status}</Text>
             </Box>
           );
         })}
